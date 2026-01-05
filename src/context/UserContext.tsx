@@ -8,6 +8,7 @@ export interface User {
   image?: string;
   provider?: 'google' | 'email' | 'x' | 'phone';
   createdAt?: string;
+  gender : string;
 }
 
 interface UserContextType {

@@ -46,7 +46,7 @@ const UserProfile = ({ open, onClose }: Props) => {
                 <p className="font-semibold text-sm">{user?.name}</p>
                 <div className="flex items-center gap-1">
                   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLZSoO1zUogOB233_S_6YL-eVPYaQXnRR5GA&s" alt="" className="w-3.5" />
-                  <p className="text-xs text-gray-500">{user.gender || "Male"}</p>
+                  <p className="text-xs text-gray-500">{user?.gender || "Male"}</p>
                 </div>
               </div>
             </div>
@@ -60,7 +60,7 @@ const UserProfile = ({ open, onClose }: Props) => {
           <div className="p-2">
             <MenuItem label="Edit Profile" handleClick={handleEditProfile} />
             {/* <MenuItem label="More" /> */}
-            <MenuItem label="Contact us" />
+            <MenuItem label="Contact us" handleClick={handleEditProfile} />
             <MenuItem label="Log out" danger handleClick={handleLogout} />
           </div>
         </div>

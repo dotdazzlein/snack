@@ -15,7 +15,7 @@ const Header = () => {
           <div
             className="w-10 h-10 cursor-pointer rounded-full overflow-hidden"
             onClick={() => setOpenProfile(true)} >
-            <img src={user.image || "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg"} alt="avatar" />
+            <img src={user?.image || "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg"} alt="avatar" />
           </div>
         ) : (
           <button
