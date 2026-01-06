@@ -10,6 +10,7 @@ export interface User {
   provider?: 'google' | 'email' | 'x' | 'phone';
   createdAt?: string;
   gender: string;
+  dateOfBirht : string
 }
 
 interface UserContextType {
@@ -27,49 +28,58 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export function UserProvider({ children }: { children: any }) {
+export function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
 
-  // components states
-  const [signinModal, setSigninModal] = useState<boolean>(false)
-  const [onboarding, setOnboarding] = useState<boolean>(true)
-  const [editProfile, setEditProfile] = useState<boolean>(false)
+  // UI states
+  const [signinModal, setSigninModal] = useState(false);
+  const [onboarding, setOnboarding] = useState(true);
+  const [editProfile, setEditProfile] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await api.get(`/user/me`);
+        const res = await api.get("/user/me", {
+          withCredentials: true, // 🔐 IMPORTANT for cookies
+        });
         setUser(res.data.user);
       } catch (error) {
-        console.error("Auth check failed:", error);
         setUser(null);
       } finally {
-        setIsLoading(false);
+        setIsLoading(false); // 🔥 AUTH CHECK DONE
       }
     };
 
     fetchUser();
   }, []);
 
-  const login = (userData: User) => {
-    setUser(userData);
-  };
-
-
   const value: UserContextType = {
     user,
     setUser,
     isLoading,
     isAuthenticated: !!user,
-    signinModal, setSigninModal,
-    onboarding, setOnboarding,
-    editProfile, setEditProfile
+    signinModal,
+    setSigninModal,
+    onboarding,
+    setOnboarding,
+    editProfile,
+    setEditProfile,
   };
 
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+  // 🔥 BLOCK RENDERING UNTIL AUTH CHECK FINISHES
+  if (isLoading) {
+    return null; 
+    // OR return <FullScreenLoader />
+  }
+
+  return (
+    <UserContext.Provider value={value}>
+      {children}
+    </UserContext.Provider>
+  );
 }
+
 
 export function useUser() {
   const context = useContext(UserContext);

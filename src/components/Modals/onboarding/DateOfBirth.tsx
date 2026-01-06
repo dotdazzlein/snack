@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import api from '../../../lib/api';
+import { useUser } from '../../../context/UserContext';
 
 const DateOfBirth = ({ onNext }: { onNext: () => void }) => {
-    const [dateOfBirth, setDateOfBirth] = useState<string>('')
+    const {user} = useUser()
+    const [dateOfBirth, setDateOfBirth] = useState<string>(user.dateOfBirht || '')
 
     const handleSave = async () => {
         await api.patch("/user/profile", { dateOfBirth });
